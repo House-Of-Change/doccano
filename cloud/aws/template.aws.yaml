@@ -11,6 +11,18 @@ Parameters:
     Type: String
     Default: "password"
     NoEcho: true
+  AWSAccessKeyId:
+    Description: AWS Access Key ID
+    Type: String
+  AWSSecretAccessKey:
+    Description: AWS Access Key
+    Type: String
+  AWSRegionName:
+    Description: AWS Region Name
+    Type: String
+  AWSBucketName:
+    Description: AWS S3 Bucket Name
+    Type: String
   KeyName:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
     Type: AWS::EC2::KeyPair::KeyName
@@ -140,11 +152,15 @@ Resources:
           ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
           # Install git
           yum install -y git
-          git clone https://github.com/doccano/doccano.git
+          git clone https://github.com/House-Of-Change/doccano.git
           cd doccano
           cp docker/.env.example .env
           sed -i s/admin/${Username}/g .env
           sed -i s/password/${Password}/g .env
+          sed -i s/AWSAccessKeyId/${AWSAccessKeyId}/g .env
+          sed -i s/AWSSecretAccessKey/${AWSSecretAccessKey}/g .env
+          sed -i s/AWSRegionName/${AWSRegionName}/g .env
+          sed -i s/AWSBucketName/${AWSBucketName}/g .env
           docker-compose -f docker/docker-compose.prod.yml up -d
       Tags:
         - Key: Name
